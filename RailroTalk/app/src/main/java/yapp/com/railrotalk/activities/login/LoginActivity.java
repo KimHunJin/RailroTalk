@@ -32,6 +32,21 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(callback);
+    }
+
     private class SessionCallback implements ISessionCallback {
 
         @Override
@@ -46,20 +61,5 @@ public class LoginActivity extends BaseActivity {
                 Logger.e(exception);
             }
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            return;
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Session.getCurrentSession().removeCallback(callback);
     }
 }

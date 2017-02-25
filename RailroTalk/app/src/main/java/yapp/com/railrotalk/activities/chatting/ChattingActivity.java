@@ -1,5 +1,6 @@
 package yapp.com.railrotalk.activities.chatting;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,8 @@ public class ChattingActivity extends AppCompatActivity {
 
     private String mUserName = "";
 
+    private String roomName = "wonho";
+
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -35,12 +38,14 @@ public class ChattingActivity extends AppCompatActivity {
         webViewSetting();
         initialize();
 
-        mUserName = "Test" + Math.random()*100;
+        Intent it = getIntent();
 
+
+        mUserName = it.getExtras().getString("id");
 
         clickEvent();
 
-        databaseReference.child("message").addChildEventListener(new ChildEventListener() {
+        databaseReference.child(roomName).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatData chatData = dataSnapshot.getValue(ChatData.class);
@@ -68,13 +73,15 @@ public class ChattingActivity extends AppCompatActivity {
             }
         });
     }
+    
+
 
     void clickEvent() {
         txtBtnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ChatData chatData = new ChatData(mUserName, edtSendMessage.getText().toString().trim());
-                databaseReference.child("message").push().setValue(chatData);
+                databaseReference.child(roomName).push().setValue(chatData);
                 edtSendMessage.setText("");
             }
         });

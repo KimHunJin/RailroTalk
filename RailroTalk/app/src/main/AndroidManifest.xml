@@ -5,12 +5,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".utils.GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.AppCompat.Light">
+        <activity android:name=".activities.intro.SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,8 +23,18 @@
             android:name=".activities.login.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activities.chatting.ChattingActivity" />
-        <activity android:name=".activities.login.MemberSettingActivity" />
-        <activity android:name=".activities.chatting.MakingChattingActivity"></activity>
+        <activity
+            android:name=".activities.login.MemberSettingActivity"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity android:name=".activities.chatting.MakingChattingActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".activities.login.SignupActivity" />
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
+        <activity android:name=".activities.chatting.UserDetailActivity"></activity>
     </application>
 
 </manifest>

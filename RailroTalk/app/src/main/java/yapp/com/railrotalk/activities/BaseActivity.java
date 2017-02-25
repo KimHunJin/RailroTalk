@@ -12,6 +12,7 @@ import com.kakao.usermgmt.callback.UnLinkResponseCallback;
 
 import yapp.com.railrotalk.MainActivity;
 import yapp.com.railrotalk.activities.login.LoginActivity;
+import yapp.com.railrotalk.activities.login.MemberSettingActivity;
 import yapp.com.railrotalk.activities.login.SignupActivity;
 import yapp.com.railrotalk.utils.GlobalApplication;
 
@@ -65,7 +66,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void redirectMainActivity() {
-        final Intent intent = new Intent(this, MainActivity.class);
+        final Intent intent = new Intent(this, MemberSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         finish();

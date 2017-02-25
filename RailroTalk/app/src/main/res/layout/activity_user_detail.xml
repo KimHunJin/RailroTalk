@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_user_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e9f2ee"
+    tools:context="yapp.com.railrotalk.activities.chatting.UserDetailActivity">
+
+    <ImageView
+        android:id="@+id/img_user_detail_info_blur"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rose1" />
+
+    <ImageView
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp" />
+
+    <yapp.com.railrotalk.utils.RoundImageView
+        android:id="@+id/img_user_detail_info_thumbnail"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_below="@id/img_user_detail_info_blur"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-80dp"
+        android:src="@drawable/rose1" />
+
+
+    <TextView
+        android:id="@+id/txt_user_detail_info_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_user_detail_info_thumbnail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="이름"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_user_detail_info_introduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_user_detail_info_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="안녕하세요." />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/txt_user_detail_info_introduce"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="#4351b2"
+        android:text="쪽지 보내기"
+        android:textColor="@color/colorWhite" />
+
+</RelativeLayout>

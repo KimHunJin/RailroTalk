@@ -8,11 +8,15 @@ public class ChattingListData {
     private int mNumber;
     private String mRoomName;
     private String mRoomImageURL;
+    private String mRoomRecentlyChat;
+    private String mRoomDate;
 
-    public ChattingListData(int number, String roomName, String roomImageURL) {
+    public ChattingListData(int number, String roomName, String roomImageURL, String roomRecentlyChat, String roomDate) {
         this.mNumber = number;
         this.mRoomName = roomName;
         this.mRoomImageURL = roomImageURL;
+        this.mRoomRecentlyChat = roomRecentlyChat;
+        this.mRoomDate = roomDate;
     }
 
     public int getmNumber() {
@@ -25,5 +29,13 @@ public class ChattingListData {
 
     public String getmRoomImageURL() {
         return mRoomImageURL;
+    }
+
+    public String getmRoomRecentlyChat() {
+        return mRoomRecentlyChat;
+    }
+
+    public String getmRoomDate() {
+        return mRoomDate;
     }
 }

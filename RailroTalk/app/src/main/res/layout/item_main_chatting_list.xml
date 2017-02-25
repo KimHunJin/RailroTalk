@@ -1,26 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:gravity="center_vertical">
+    android:layout_margin="4dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <ImageView
-        android:src="@mipmap/ic_launcher"
+    <yapp.com.railrotalk.utils.RoundImageView
         android:id="@+id/img_chatting_main_item_list"
         android:layout_width="48dp"
-        android:layout_height="48dp" />
+        android:layout_height="48dp"
+        android:src="@mipmap/ic_launcher" />
 
-    <View
-        android:layout_marginLeft="8dp"
-        android:layout_width="1dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorRightGray"/>
+        android:layout_toRightOf="@id/img_chatting_main_item_list"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_chatting_main_item_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="이름"
+            android:textColor="@color/colorBlue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_chatting_main_recently_item_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
+            android:text="집에 가고 시프다아"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <TextView
-        android:layout_marginLeft="8dp"
-        android:id="@+id/txt_chatting_main_item_list"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="48dp" />
+        android:id="@+id/txt_chatting_main_date_item_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:text="시간" />
 
-</LinearLayout>
+</RelativeLayout>

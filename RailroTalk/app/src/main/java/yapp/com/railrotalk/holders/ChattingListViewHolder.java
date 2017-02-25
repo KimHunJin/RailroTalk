@@ -16,7 +16,7 @@ import yapp.com.railrotalk.dto.ChattingListData;
 public class ChattingListViewHolder extends GenericViewHolder {
 
     private ImageView mImageRoom;
-    private TextView mTxtRoomName;
+    private TextView mTxtRoomName, mTxtRecentlyChat, mTxtDate;
     private View mView;
 
     public ChattingListViewHolder(View itemView) {
@@ -24,6 +24,8 @@ public class ChattingListViewHolder extends GenericViewHolder {
         this.mView = itemView;
         this.mImageRoom = (ImageView)mView.findViewById(R.id.img_chatting_main_item_list);
         this.mTxtRoomName = (TextView)mView.findViewById(R.id.txt_chatting_main_item_list);
+        this.mTxtRecentlyChat = (TextView)mView.findViewById(R.id.txt_chatting_main_recently_item_list);
+        this.mTxtDate = (TextView)mView.findViewById(R.id.txt_chatting_main_date_item_list);
     }
 
     @Override
