@@ -25,7 +25,6 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
         if (!Session.getCurrentSession().checkAndImplicitOpen()) {

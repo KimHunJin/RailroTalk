@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_chatting"
     android:layout_width="match_parent"
@@ -7,15 +7,16 @@
     android:orientation="vertical"
     tools:context="yapp.com.railrotalk.activities.chatting.ChattingActivity">
 
-    <WebView
+    <TextView
+        android:id="@+id/wv_chatting_frame"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.9"
-        android:background="@color/colorWhite"></WebView>
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:scrollbars="vertical"></TextView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_weight="0.1"
         android:background="@color/colorRightGray"
@@ -24,7 +25,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/edtKnowHowDetailReplyContents"
+            android:id="@+id/edt_chatting_send_message"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="5dp"
@@ -40,7 +41,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/txtKnowHowDetailReplyRegister"
+            android:id="@+id/txt_chatting_send_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.15"
@@ -53,4 +54,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

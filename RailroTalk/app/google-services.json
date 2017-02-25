@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "794780963070",
+    "firebase_url": "https://reilro-24e18.firebaseio.com",
+    "project_id": "reilro-24e18",
+    "storage_bucket": "reilro-24e18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794780963070:android:42be85acab98f274",
+        "android_client_info": {
+          "package_name": "yapp.com.railrotalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794780963070-6qku8s612v4osd187u0ekfrjtvsiolb8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "yapp.com.railrotalk",
+            "certificate_hash": "e126cade3245010fbb49d56c1b9ca71045b38d90"
+          }
+        },
+        {
+          "client_id": "794780963070-fs21jj4opk4ksuj8a1i92q2lu927264o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2Dn5JAVx5SaSbVTX2ICEE7lr1yY9bKMA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794780963070-fs21jj4opk4ksuj8a1i92q2lu927264o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

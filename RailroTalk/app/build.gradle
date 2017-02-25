@@ -27,6 +27,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
 
+    // design support library
+    compile 'com.android.support:design:25.1.0'
+
     // kakao
     compile group: project.KAKAO_SDK_GROUP, name: 'kakaolink', version: project.KAKAO_SDK_VERSION
     compile group: project.KAKAO_SDK_GROUP, name: 'kakaotalk', version: project.KAKAO_SDK_VERSION
@@ -36,4 +39,13 @@ dependencies {
     // volley - using kakao
     compile 'com.mcxiaoke.volley:library:1.0.8'
 
+    // firebase
+    compile 'com.google.firebase:firebase-auth:10.0.0'
+    compile 'com.google.firebase:firebase-database:10.0.0'
+
+    // glide
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
 }
+
+apply plugin: 'com.google.gms.google-services'

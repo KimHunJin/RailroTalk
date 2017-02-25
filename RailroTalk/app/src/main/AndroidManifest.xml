@@ -20,7 +20,9 @@
         <activity
             android:name=".activities.login.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activities.chatting.ChattingActivity"></activity>
+        <activity android:name=".activities.chatting.ChattingActivity" />
+        <activity android:name=".activities.login.MemberSettingActivity" />
+        <activity android:name=".activities.chatting.MakingChattingActivity"></activity>
     </application>
 
 </manifest>
