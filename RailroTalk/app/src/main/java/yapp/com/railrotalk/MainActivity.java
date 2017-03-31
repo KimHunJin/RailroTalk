@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -17,14 +19,22 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 
+import rx.Subscription;
 import yapp.com.railrotalk.activities.chatting.ChattingActivity;
+import yapp.com.railrotalk.activities.chatting.MakingChattingActivity;
 import yapp.com.railrotalk.adapters.MainChattingListRecyclerViewAdapter;
 import yapp.com.railrotalk.dto.ChattingListData;
+import yapp.com.railrotalk.network.NetworkRequest;
+import yapp.com.railrotalk.network.RestAPI;
+import yapp.com.railrotalk.network.RestAPIBuilder;
 
 /**
  * Created by HunJin on 2017-02-24.
  */
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private Subscription mSubscription;
 
     private RecyclerView rcvMainChattingList;
     private MainChattingListRecyclerViewAdapter mainChattingListRecyclerViewAdapter;
@@ -36,74 +46,78 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
+    String name;
+    String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initialize();
-
     }
 
     void initialize() {
-        rcvMainChattingList = (RecyclerView) findViewById(R.id.rcv_main_chatting_list);
-        mainChattingListRecyclerViewAdapter = new MainChattingListRecyclerViewAdapter(getApplicationContext());
-        rcvMainChattingList.setHasFixedSize(true);
-        rcvMainChattingList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        fbtMainMakingChatting = (FloatingActionButton) findViewById(R.id.fab_main_chatting_making);
-        addData();
-        rcvMainChattingList.setAdapter(mainChattingListRecyclerViewAdapter);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_main);
-        toggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                R.string.drawer_open,
-                R.string.drawer_close
-        ) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
-        drawerLayout.setDrawerListener(toggle);
-
-        fbtMainMakingChatting.setOnClickListener(new View.OnClickListener() {
+        UserManagement.requestMe(new MeResponseCallback() {
             @Override
-            public void onClick(View v) {
-                UserManagement.requestMe(new MeResponseCallback() {
-                    @Override
-                    public void onSessionClosed(ErrorResult errorResult) {
+            public void onSessionClosed(ErrorResult errorResult) {
 
-                    }
+            }
 
-                    @Override
-                    public void onNotSignedUp() {
+            @Override
+            public void onNotSignedUp() {
 
-                    }
+            }
 
-                    @Override
-                    public void onSuccess(UserProfile result) {
-                        Intent it = new Intent(getApplicationContext(),ChattingActivity.class);
-                        it.putExtra("id",result.getNickname());
-                        startActivity(it);
-                    }
-                });
+            @Override
+            public void onSuccess(UserProfile result) {
+                name = result.getNickname();
+                id = result.getId() + "";
+                checkRoom();
             }
         });
-
     }
 
-    void addData() {
+    void checkRoom() {
+        RestAPI getRoom = RestAPIBuilder.buildRetrofirServiceNode();
 
-        mainChattingListRecyclerViewAdapter.addData(new ChattingListData(0, "방1", "asdfasdf", "afasdf", "fasdfa"));
-        mainChattingListRecyclerViewAdapter.addData(new ChattingListData(1, "방2", "asdfasdf", "fdsaff", "fsadf"));
-        mainChattingListRecyclerViewAdapter.addData(new ChattingListData(2, "방3", "asdfasdf", "fsadfasdf", "gdsfg"));
-
+        mSubscription = NetworkRequest.performAsyncRequest(
+                getRoom.getRoom(Integer.parseInt(id)
+                ), (data) -> {
+                    String err = data.getErr();
+                    if (err.equals("404")) {
+                        Intent it = new Intent(getApplicationContext(), MakingChattingActivity.class);
+                        it.putExtra("id", id);
+                        it.putExtra("name", name);
+                        startActivity(it);
+                        finish();
+                    } else {
+                        String number = data.getRoom();
+                        Intent it = new Intent(getApplicationContext(), ChattingActivity.class);
+                        String param =
+                                "{" +
+                                        "\"train_room_num\":" + number + "," +
+                                        "\"user_list\":[" +
+                                        "{" +
+                                        "\"kakao_id\":\"dlwoen1\"," +
+                                        "\"nickname\":\"haha\"" +
+                                        "}," +
+                                        "{" +
+                                        "\"kakao_id\":\"" + id + "\"," +
+                                        "\"nickname\":\"" + name + "\"" +
+                                        "}" +
+                                        "]" +
+                                        "}";
+                        it.putExtra("name",name);
+                        it.putExtra("id",id);
+                        it.putExtra("param", param);
+                        startActivity(it);
+                        finish();
+                    }
+//            Toast.makeText(getApplicationContext(), "저장했습니다.", Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+//            finish();
+                }, (error) -> {
+                    Log.e(TAG, "error : " + error.getMessage() + "");
+                });
     }
 }

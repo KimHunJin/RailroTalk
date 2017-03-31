@@ -3,6 +3,9 @@ package yapp.com.railrotalk.activities.intro;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import yapp.com.railrotalk.MainActivity;
 import yapp.com.railrotalk.R;

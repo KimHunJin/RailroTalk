@@ -7,10 +7,10 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class SetKakaoInfoItem {
-    @SerializedName("result")
-    String result;
+    @SerializedName("err")
+    String err;
 
-    public String getResult() {
-        return result;
+    public String getErr() {
+        return err;
     }
 }

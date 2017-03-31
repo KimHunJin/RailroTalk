@@ -22,4 +22,15 @@ public class RestAPIBuilder {
 
         return retrofit.create(RestAPI.class);
     }
+
+    public static RestAPI buildRetrofirServiceNode() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(URL.NODE_SERVER)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(new OkHttpClient.Builder().build())
+                .build();
+
+        return retrofit.create(RestAPI.class);
+    }
 }

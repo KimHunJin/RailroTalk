@@ -1,107 +1,133 @@
 package yapp.com.railrotalk.activities.chatting;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import rx.Subscription;
 import yapp.com.railrotalk.R;
-import yapp.com.railrotalk.dto.ChatData;
+import yapp.com.railrotalk.network.NetworkRequest;
+import yapp.com.railrotalk.network.RestAPI;
+import yapp.com.railrotalk.network.RestAPIBuilder;
+import yapp.com.railrotalk.utils.URL;
 
 public class ChattingActivity extends AppCompatActivity {
 
-    private TextView webViewFrame;
-    private EditText edtSendMessage;
-    private TextView txtBtnSend;
+    private WebView webViewFrame;
+    private Toolbar mToolbar;
+//    private EditText edtSendMessage;
+//    private TextView txtBtnSend;
 
-    private String mUserName = "";
 
-    private String roomName = "wonho";
+    private static final String TAG = "ChattingActivity";
 
+    private String id, name;
+    String script;
+    private Subscription mSubscription;
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
 
-        webViewSetting();
-        initialize();
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent it = getIntent();
+        id = it.getExtras().getString("id");
+        name = it.getExtras().getString("name");
+        String param = it.getExtras().getString("param");
 
+        Log.e(TAG, param);
 
-        mUserName = it.getExtras().getString("id");
+        script = "javascript:start('" + param + "')";
 
-        clickEvent();
-
-        databaseReference.child(roomName).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                ChatData chatData = dataSnapshot.getValue(ChatData.class);
-                webViewFrame.setText(webViewFrame.getText().toString()+chatData.getUserName()+" : " + chatData.getMessage()+"\n");
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-    
-
-
-    void clickEvent() {
-        txtBtnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChatData chatData = new ChatData(mUserName, edtSendMessage.getText().toString().trim());
-                databaseReference.child(roomName).push().setValue(chatData);
-                edtSendMessage.setText("");
-            }
-        });
+        initialize();
+        webViewSetting();
     }
 
     void initialize() {
-        edtSendMessage = (EditText)findViewById(R.id.edt_chatting_send_message);
-        txtBtnSend = (TextView)findViewById(R.id.txt_chatting_send_button);
+        progressBar = (ProgressBar) findViewById(R.id.pgb_web_loading);
+        webViewFrame = (WebView) findViewById(R.id.wv_chatting_frame);
     }
 
     void webViewSetting() {
-        webViewFrame = (TextView)findViewById(R.id.wv_chatting_frame);
-//        webViewFrame.setWebViewClient(new WebViewClient());
-//        webViewFrame.clearCache(true);
-//        webViewFrame.clearHistory();
-//        webViewFrame.getSettings().setJavaScriptEnabled(true);
-//        webViewFrame.getSettings().setAllowContentAccess(true);
-//        webViewFrame.getSettings().setBlockNetworkLoads(false);
-//        webViewFrame.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-//        webViewFrame.getSettings().setAppCacheEnabled(false);
-//        webViewFrame.loadUrl(URL.WEB_VIEW_URL);
+
+        webViewFrame.clearCache(true);
+        webViewFrame.clearHistory();
+        webViewFrame.getSettings().setJavaScriptEnabled(true);
+        webViewFrame.getSettings().setAllowContentAccess(true);
+        webViewFrame.getSettings().setBlockNetworkLoads(false);
+        webViewFrame.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webViewFrame.getSettings().setAppCacheEnabled(false);
+        webViewFrame.getSettings().setLoadWithOverviewMode(true);
+        webViewFrame.loadUrl(URL.WEB_VIEW_URL_CHAT);
+        webViewFrame.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                setVisibilityProgress(true);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                setVisibilityProgress(false);
+                view.loadUrl(script);
+            }
+        });
+
+    }
+
+    void setVisibilityProgress(boolean isVisible) {
+        if (isVisible) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                RestAPI restAPI = RestAPIBuilder.buildRetrofirServiceNode();
+                Map<String, String> map = new HashMap();
+                map.put("id", id + "");
+                mSubscription = NetworkRequest.performAsyncRequest(restAPI.deleteRoom(map), (data) -> {
+                    Intent it = new Intent(ChattingActivity.this, MakingChattingActivity.class);
+                    it.putExtra("id", id);
+                    it.putExtra("name", name);
+                    startActivity(it);
+                    finish();
+                }, (error) -> {
+                    Log.e(TAG, "error : " + error);
+                });
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

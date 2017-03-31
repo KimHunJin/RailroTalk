@@ -3,4 +3,8 @@
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
     <string name="kakao_app_key">9594f2387acc3fa56ba1b40f129d6dbe</string>
+
+    <string name="railo_info">같은 레일로 공간의 사람들과 대화를 해보아요. \n
+    심심한 여행길이 되지 않게 같이 정보도 나누고 사람도 만나고~ \n
+    </string>
 </resources>

@@ -79,10 +79,11 @@ public class MemberSettingActivity extends AppCompatActivity {
      * @param uid
      */
     private void getNetwor(String uid) {
-        RestAPI restAPI = RestAPIBuilder.buildRetrofitService();
+        Log.e(TAG, "getNetwor");
+        RestAPI restAPI = RestAPIBuilder.buildRetrofirServiceNode();
         mSubscription = NetworkRequest.performAsyncRequest(restAPI.getCheck(uid), (data) -> {
             check = displayPost(data);
-            if (check.equals("true")) {
+            if (check.equals("false")) {
                 setContentView(R.layout.activity_member_setting);
                 // TODO: 2017-02-25 layout setting and event
                 initialize();
@@ -189,11 +190,12 @@ public class MemberSettingActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UserProfile result) {
                 Log.e(TAG, "setKakaoInfo onSuccess");
-                userInfo.put("kakao_id", result.getId() + "");
-                userInfo.put("nickname", result.getNickname() + "");
+                userInfo.put("id", result.getId() + "");
+                userInfo.put("name", result.getNickname() + "");
+                userInfo.put("image", result.getThumbnailImagePath());
                 userInfo.put("gender", myGender);
-                userInfo.put("same_gender", sameGender);
-                userInfo.put("other_gender", otherGender);
+                userInfo.put("same", sameGender);
+                userInfo.put("other", otherGender);
                 userInfo.put("say", myMessage);
                 setNetwork();
             }
@@ -201,14 +203,22 @@ public class MemberSettingActivity extends AppCompatActivity {
     }
 
     private void setNetwork() {
-        RestAPI restAPI2 = RestAPIBuilder.buildRetrofitService();
-        mSubscription = NetworkRequest.performAsyncRequest(restAPI2.setItem(userInfo), (data) -> {
-            Log.e(TAG, "success");
-            Toast.makeText(getApplicationContext(), "저장했습니다.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }, (error) -> {
-            Log.e(TAG, error.getMessage() + "");
-        });
+        Log.e(TAG, "setNetwork");
+        RestAPI restAPI = RestAPIBuilder.buildRetrofirServiceNode();
+        mSubscription = NetworkRequest.performAsyncRequest(
+                restAPI.setUser(
+                        userInfo
+                ), (data) -> {
+//                    String value = data.getErr();
+//                    if (value.equals("200")) {
+                        Toast.makeText(getApplicationContext(), "저장했습니다.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+//                    } else {
+//                        Log.e(TAG, "error error error");
+//                    }
+                }, (error) -> {
+                    Log.e(TAG, "error : " + error);
+                });
     }
 }

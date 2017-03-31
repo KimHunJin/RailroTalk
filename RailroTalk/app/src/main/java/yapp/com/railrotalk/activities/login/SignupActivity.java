@@ -10,7 +10,15 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.helper.log.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Retrofit;
+import rx.Subscription;
 import yapp.com.railrotalk.activities.BaseActivity;
+import yapp.com.railrotalk.network.NetworkRequest;
+import yapp.com.railrotalk.network.RestAPI;
+import yapp.com.railrotalk.network.RestAPIBuilder;
 
 /**
  * Created by HunJin on 2017-02-24.
@@ -20,6 +28,7 @@ import yapp.com.railrotalk.activities.BaseActivity;
 public class SignupActivity extends BaseActivity {
 
     String TAG = "SignupActivity";
+    private Subscription mSubscription;
 
     /**
      * Main으로 넘길지 가입 페이지를 그릴지 판단하기 위해 me를 호출한다.
@@ -62,7 +71,10 @@ public class SignupActivity extends BaseActivity {
             @Override
             public void onSuccess(UserProfile userProfile) {
                 Log.e(TAG, "Set Profile");
-                redirectMainActivity();
+//                setProfile(userProfile.getId(), userProfile.getNickname(), userProfile.getThumbnailImagePath());
+//                redirectSignupActivity();
+
+                redirectMemberSettingActivity();
             }
 
             @Override
@@ -70,5 +82,22 @@ public class SignupActivity extends BaseActivity {
                 Log.e(TAG, "not singed up");
             }
         });
+    }
+
+
+    void setProfile(long id, String nickname, String image) {
+        Map<String, String> map = new HashMap();
+        map.put("id",id+"");
+        map.put("name",nickname);
+        map.put("image",image);
+        RestAPI restAPI = RestAPIBuilder.buildRetrofirServiceNode();
+        mSubscription = NetworkRequest.performAsyncRequest(
+                restAPI.setUser(map), (data)->{
+                    redirectMainActivity();
+        }, (error) -> {
+
+        });
+
+
     }
 }

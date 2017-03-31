@@ -7,11 +7,12 @@
     <application
         android:name=".utils.GlobalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/railtalk"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-        <activity android:name=".activities.intro.SplashActivity"
+        <activity
+            android:name=".activities.intro.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +23,9 @@
         <activity
             android:name=".activities.login.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activities.chatting.ChattingActivity" />
+        <activity
+            android:name=".activities.chatting.ChattingActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.login.MemberSettingActivity"
             android:theme="@style/Theme.AppCompat.Light" />
